@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/supabase-proxy/:path*", "destination": "https://xwcgqybqoowfqlueensz.supabase.co/:path*" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }
