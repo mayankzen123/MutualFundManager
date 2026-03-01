@@ -21,15 +21,15 @@ function formatCurrency(n) { return '₹' + Number(n || 0).toLocaleString('en-IN
 
 function StatCard({ icon: Icon, label, value, sub, gradient, iconBg }) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-5 hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-5 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between">
-        <div className={`p-2.5 rounded-xl ${iconBg}`}>
-          <Icon className="w-5 h-5 text-white" />
+        <div className={`p-2 sm:p-2.5 rounded-xl ${iconBg}`}>
+          <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
         </div>
       </div>
-      <p className="text-2xl font-extrabold text-slate-900 mt-4 tracking-tight">{value}</p>
-      <p className="text-sm text-slate-500 mt-0.5">{label}</p>
-      {sub && <p className="text-xs text-slate-400 mt-1">{sub}</p>}
+      <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-3 sm:mt-4 tracking-tight">{value}</p>
+      <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{label}</p>
+      {sub && <p className="text-[11px] sm:text-xs text-slate-400 mt-1">{sub}</p>}
     </div>
   )
 }
@@ -191,17 +191,17 @@ export default function Dashboard() {
   const stoppedPct = Math.round((stats.stoppedInvestments / invTotal) * 100)
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Dashboard</h1>
-          <p className="text-slate-500 text-sm mt-1">Overview of your mutual fund portfolio</p>
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Dashboard</h1>
+          <p className="text-slate-500 text-sm mt-0.5 sm:mt-1">Overview of your mutual fund portfolio</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="relative group">
-            <button className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-100 transition-colors">
+            <button className="inline-flex items-center gap-2 px-3 sm:px-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-700 text-sm font-semibold rounded-xl hover:bg-slate-100 transition-colors">
               <Download className="w-4 h-4" />
-              Export
+              <span className="hidden sm:inline">Export</span>
             </button>
             <div className="absolute right-0 top-full mt-1.5 w-48 bg-white rounded-xl border border-slate-200 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
               <button onClick={handleExportClients} className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 rounded-t-xl transition-colors">All Clients</button>
@@ -210,9 +210,10 @@ export default function Dashboard() {
           </div>
           <Link
             to="/clients/new"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl hover:from-primary-700 hover:to-primary-600 transition-all shadow-md shadow-primary-500/20 active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl hover:from-primary-700 hover:to-primary-600 transition-all shadow-md shadow-primary-500/20 active:scale-[0.98]"
           >
-            Add Client
+            <span className="hidden sm:inline">Add Client</span>
+            <span className="sm:hidden">Add</span>
             <ArrowUpRight className="w-4 h-4" />
           </Link>
         </div>
@@ -229,7 +230,7 @@ export default function Dashboard() {
       {/* Middle row: KYC breakdown + Investment status + Registration */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* KYC Breakdown */}
-        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-6">
+        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-6">
           <h3 className="text-sm font-bold text-slate-900 mb-5">KYC Distribution</h3>
           <div className="flex items-center gap-6">
             <div className="relative w-[100px] h-[100px] shrink-0">
@@ -268,7 +269,7 @@ export default function Dashboard() {
         </div>
 
         {/* Investment Status */}
-        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-6">
+        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-6">
           <h3 className="text-sm font-bold text-slate-900 mb-5">Investment Status</h3>
           <div className="space-y-4">
             <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50/70 border border-emerald-100">
@@ -299,7 +300,7 @@ export default function Dashboard() {
         </div>
 
         {/* Registration Progress */}
-        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-6">
+        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-6">
           <h3 className="text-sm font-bold text-slate-900 mb-5">Registration Progress</h3>
           <div className="space-y-4">
             <MiniBar label="Bank" value={stats.bankRegistered} max={stats.totalClients} color="bg-gradient-to-r from-violet-500 to-purple-500" />
@@ -321,7 +322,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Recent Clients */}
         <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-900">Recent Clients</h3>
             <Link to="/clients" className="text-xs font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-0.5">
               View all <ChevronRight className="w-3.5 h-3.5" />
@@ -332,7 +333,7 @@ export default function Dashboard() {
           ) : (
             <div className="divide-y divide-slate-50">
               {stats.recentClients.map(client => (
-                <Link key={client.id} to={`/clients/${client.id}`} className="flex items-center gap-3.5 px-6 py-3.5 hover:bg-primary-50/30 transition-colors">
+                <Link key={client.id} to={`/clients/${client.id}`} className="flex items-center gap-3 sm:gap-3.5 px-4 sm:px-6 py-3.5 hover:bg-primary-50/30 transition-colors">
                   <div className={`w-9 h-9 bg-gradient-to-br ${getAvatarColor(client.name)} rounded-xl flex items-center justify-center shadow-sm shrink-0`}>
                     <span className="text-xs font-bold text-white">{getInitials(client.name)}</span>
                   </div>
@@ -353,7 +354,7 @@ export default function Dashboard() {
 
         {/* Top Investments */}
         <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-900">Top Investments</h3>
             <span className="text-xs text-slate-400">By amount</span>
           </div>
@@ -362,7 +363,7 @@ export default function Dashboard() {
           ) : (
             <div className="divide-y divide-slate-50">
               {stats.topInvestments.map((inv, idx) => (
-                <div key={inv.id} className="flex items-center gap-3.5 px-6 py-3.5">
+                <div key={inv.id} className="flex items-center gap-3 sm:gap-3.5 px-4 sm:px-6 py-3.5">
                   <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-sm shrink-0 ${
                     inv.registrar === 'CAMS'
                       ? 'bg-gradient-to-br from-emerald-500 to-teal-600'

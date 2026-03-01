@@ -127,34 +127,34 @@ export default function AddEditClient() {
   const progress = isEdit ? 100 : ((step - 1) / (steps.length - 1)) * 100
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center gap-4">
-        <Link to={isEdit ? `/clients/${id}` : '/clients'} className="p-2.5 rounded-xl hover:bg-slate-100 transition-colors">
+    <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+      <div className="flex items-center gap-3 sm:gap-4">
+        <Link to={isEdit ? `/clients/${id}` : '/clients'} className="p-2 sm:p-2.5 rounded-xl hover:bg-slate-100 transition-colors">
           <ArrowLeft className="w-5 h-5 text-slate-500" />
         </Link>
         <div>
-          <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">{isEdit ? 'Edit Client' : 'New Client'}</h1>
-          <p className="text-sm text-slate-400 mt-0.5">{isEdit ? 'Update client information' : 'Fill in details to register a new client'}</p>
+          <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">{isEdit ? 'Edit Client' : 'New Client'}</h1>
+          <p className="text-xs sm:text-sm text-slate-400 mt-0.5">{isEdit ? 'Update client information' : 'Fill in details to register a new client'}</p>
         </div>
       </div>
 
       {!isEdit && (
-        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-5">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-3 sm:p-5">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
             {steps.map((s, i) => (
-              <div key={s.id} className="flex items-center gap-2 flex-1">
+              <div key={s.id} className="flex items-center gap-1.5 sm:gap-2 flex-1">
                 <button
                   onClick={() => setStep(s.id)}
-                  className="flex items-center gap-2.5 group"
+                  className="flex items-center gap-1.5 sm:gap-2.5 group"
                 >
-                  <span className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                  <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold transition-all duration-300 ${
                     step === s.id
                       ? 'bg-gradient-to-br from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-500/30 scale-110'
                       : step > s.id
                       ? 'bg-emerald-500 text-white shadow-sm'
                       : 'bg-slate-100 text-slate-400'
                   }`}>
-                    {step > s.id ? <Check className="w-4 h-4" /> : s.id}
+                    {step > s.id ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : s.id}
                   </span>
                   <span className={`text-sm font-medium hidden sm:block transition-colors ${
                     step === s.id ? 'text-primary-700' : step > s.id ? 'text-emerald-600' : 'text-slate-400'
@@ -163,7 +163,7 @@ export default function AddEditClient() {
                   </span>
                 </button>
                 {i < steps.length - 1 && (
-                  <div className="flex-1 h-0.5 mx-2 rounded-full overflow-hidden bg-slate-100">
+                  <div className="flex-1 h-0.5 mx-1 sm:mx-2 rounded-full overflow-hidden bg-slate-100">
                     <div className={`h-full rounded-full transition-all duration-500 ${step > s.id ? 'bg-emerald-500 w-full' : 'bg-transparent w-0'}`} />
                   </div>
                 )}
@@ -176,7 +176,7 @@ export default function AddEditClient() {
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-6">
+      <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-4 sm:p-6">
         {(step === 1 || isEdit) && (
           <div className={isEdit ? '' : step !== 1 ? 'hidden' : ''}>
             <h2 className="text-base font-bold text-slate-900 mb-5">Personal Details</h2>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Users, PlusCircle, TrendingUp, LogOut, KeyRound } from 'lucide-react'
+import { LayoutDashboard, Users, PlusCircle, TrendingUp, LogOut, KeyRound, X } from 'lucide-react'
 import { useAuth } from '../lib/auth'
 import Modal from './Modal'
 import toast from 'react-hot-toast'
@@ -13,7 +13,7 @@ const navItems = [
 
 const inputCls = 'w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 focus:bg-white transition-all'
 
-export default function Sidebar() {
+export default function Sidebar({ open, onClose }) {
   const { logout, changePassword } = useAuth()
   const navigate = useNavigate()
   const [showPasswordModal, setShowPasswordModal] = useState(false)
@@ -23,6 +23,10 @@ export default function Sidebar() {
   function handleLogout() {
     logout()
     navigate('/login')
+  }
+
+  function handleNavClick() {
+    onClose?.()
   }
 
   async function handleChangePassword(e) {
@@ -43,19 +47,25 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className="fixed left-0 top-0 bottom-0 w-[260px] bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 flex flex-col z-40">
-        <div className="px-6 pt-7 pb-6">
+      {/* Mobile overlay */}
+      {open && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden" onClick={onClose} />
+      )}
+
+      <aside className={`fixed left-0 top-0 bottom-0 w-[260px] bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 flex flex-col z-50 transition-transform duration-300 lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="px-6 pt-7 pb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25">
+              <TrendingUp className="w-5 h-5 text-white" />
             </div>
             <div>
               <h1 className="text-[15px] font-bold text-white tracking-tight">MF Manager</h1>
               <p className="text-[11px] text-slate-400 font-medium tracking-wide">CAMS &middot; KFINTECH</p>
             </div>
           </div>
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors lg:hidden">
+            <X className="w-5 h-5 text-slate-400" />
+          </button>
         </div>
 
         <div className="px-3 mb-2">
@@ -68,6 +78,7 @@ export default function Sidebar() {
               key={to}
               to={to}
               end={to === '/clients'}
+              onClick={handleNavClick}
               className={({ isActive }) =>
                 `group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive
