@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { supabase } from './supabase'
 
 const AuthContext = createContext(null)
 
 const SESSION_KEY = 'mf_admin_session'
-const HASH_KEY = 'mf_admin_hash'
+const DEFAULT_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
 
 async function sha256(text) {
   const data = new TextEncoder().encode(text)
@@ -11,11 +12,19 @@ async function sha256(text) {
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('')
 }
 
-// Default password: admin123
-const DEFAULT_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
+async function getStoredHash() {
+  const { data } = await supabase
+    .from('app_settings')
+    .select('value')
+    .eq('key', 'admin_password_hash')
+    .single()
+  return data?.value || DEFAULT_HASH
+}
 
-function getSavedHash() {
-  return localStorage.getItem(HASH_KEY) || DEFAULT_HASH
+async function saveHash(hash) {
+  await supabase
+    .from('app_settings')
+    .upsert({ key: 'admin_password_hash', value: hash, updated_at: new Date().toISOString() })
 }
 
 export function AuthProvider({ children }) {
@@ -25,7 +34,8 @@ export function AuthProvider({ children }) {
 
   async function login(password) {
     const hash = await sha256(password)
-    if (hash === getSavedHash()) {
+    const storedHash = await getStoredHash()
+    if (hash === storedHash) {
       sessionStorage.setItem(SESSION_KEY, 'true')
       setAuthenticated(true)
       return { success: true }
@@ -40,14 +50,15 @@ export function AuthProvider({ children }) {
 
   async function changePassword(currentPassword, newPassword) {
     const currentHash = await sha256(currentPassword)
-    if (currentHash !== getSavedHash()) {
+    const storedHash = await getStoredHash()
+    if (currentHash !== storedHash) {
       return { success: false, error: 'Current password is incorrect' }
     }
     if (newPassword.length < 4) {
       return { success: false, error: 'New password must be at least 4 characters' }
     }
     const newHash = await sha256(newPassword)
-    localStorage.setItem(HASH_KEY, newHash)
+    await saveHash(newHash)
     return { success: true }
   }
 
